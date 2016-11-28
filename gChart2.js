@@ -1,12 +1,11 @@
 
 function init(){
-  cont =1;
+  cont =0;
   //Carga la visualización de la API
   google.charts.load('current', {'packages':['corechart']});
 
   //Configura el callback para correr cuando la API esté cargada
-  
-      google.charts.setOnLoadCallback(()=>draw(0,0.2));
+  google.charts.setOnLoadCallback(draw);
 
 }
 
@@ -34,15 +33,19 @@ function draw(x,y){
     'height':300,
     'colors':["#1D84CE","#EF1C27","#7B4977","#eb6109","#D42B16","#2AAB8C",
     "#FFDF5E","#00447B","#0036FF","#008000","#B5CF18","#FFD700"],
-    pieSliceText: 'label',
-    slices: {  
-      x: {offset: y},
-    },
   };
-
   var chart = new google.visualization.PieChart(document.getElementById('chart'));
   chart.draw(table, options);
+  window.setTimeout(modifyChart, 10000, chart, table, options);
 }
+function modifyChart(table, data, options){
+  for(let i=11; i<12;i++){
+    let change = data.getValue(i,1) + Math.floor((Math.random() * 80) + 1);
+    data.setValue(i, 1, change);
+  }
+  table.draw(data, options)
+}
+
 
 window.onload=function(){
   init();
